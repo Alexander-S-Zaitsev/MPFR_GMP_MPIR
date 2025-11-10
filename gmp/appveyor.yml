@@ -1,0 +1,54 @@
+version: '1.0.{build}'
+
+branches:
+  only:
+    - develop
+
+skip_non_tags: true
+
+image: Visual Studio 2019
+
+configuration:
+  - Release
+  - Debug
+
+environment:
+  matrix:
+    - TOOLSET: msvc2019-x86
+      GENERATOR: Visual Studio 16 2019
+      PLATFORM: Win32
+    - TOOLSET: msvc2019-x64
+      GENERATOR: Visual Studio 16 2019
+      PLATFORM: x64
+
+matrix:
+  fast_finish: true
+
+before_build:
+  - cmd: mkdir build
+  - cmd: cd build
+  - cmd: cmake -G "%GENERATOR%" -A %PLATFORM% -DCMAKE_INSTALL_PREFIX:PATH=%APPVEYOR_BUILD_FOLDER%/gmp-%APPVEYOR_REPO_TAG_NAME%-%TOOLSET%-%CONFIGURATION% ..
+
+build_script:
+  - cmd: cmake --build . --config %CONFIGURATION%
+
+test_script:
+  - cmd: cmake --build . --config %CONFIGURATION% --target RUN_TESTS
+
+after_test:
+  - cmd: cmake --build . --config %CONFIGURATION% --target INSTALL
+  - cmd: cd ..
+  - cmd: 7z a gmp-%APPVEYOR_REPO_TAG_NAME%-%TOOLSET%-%CONFIGURATION%.zip gmp-%APPVEYOR_REPO_TAG_NAME%-%TOOLSET%-%CONFIGURATION%
+
+artifacts:
+  - path: gmp-%APPVEYOR_REPO_TAG_NAME%-%TOOLSET%-%CONFIGURATION%.zip
+    name: gmp
+
+deploy:
+  - provider: GitHub
+    artifacts: /.*\.zip/
+    auth_token:
+      secure: V7tmaT1H61+mKEJT1uMzSVwT2HseGbOBhMHIBVWQ72YEprXQ0wyXWw3Cp9O4pvyR
+    on:
+      branch: develop          # release from develop branch only
+      APPVEYOR_REPO_TAG: true  # deploy on tag push only
