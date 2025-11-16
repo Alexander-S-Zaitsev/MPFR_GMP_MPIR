@@ -27,7 +27,7 @@
 #  see https://www.gnu.org/licenses/.
 
 
-cmake_minimum_required(VERSION 3.12.2)
+cmake_minimum_required(VERSION 3.31)
 
 project(GMP
   VERSION 6.1.2

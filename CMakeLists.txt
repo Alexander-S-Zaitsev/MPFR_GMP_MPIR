@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.31)
 
 set(PROJECT_NAME_STR MPFR_GMP_MPIR_test)
 set(CMAKE_CXX_STANDARD 11)
