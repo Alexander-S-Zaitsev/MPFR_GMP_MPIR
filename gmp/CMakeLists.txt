@@ -370,18 +370,18 @@ add_custom_target(
 )
 
 include_directories(
-  ${CMAKE_SOURCE_DIR}/gmp
-  ${CMAKE_BINARY_DIR}/gmp
-  ${CMAKE_BINARY_DIR}/gmp/mpn
+  ${PROJECT_SOURCE_DIR}
+  ${PROJECT_BINARY_DIR}
+  ${PROJECT_BINARY_DIR}/mpn
   # ${CMAKE_SOURCE_DIR}
   # ${CMAKE_BINARY_DIR}
   # ${CMAKE_BINARY_DIR}/mpn
 )
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-  include_directories(${CMAKE_SOURCE_DIR}/gmp/mpn/x86_64/k8)
+  include_directories((${PROJECT_SOURCE_DIR}/mpn/x86_64/k8))
   #include_directories(${CMAKE_SOURCE_DIR}/mpn/x86_64/k8)
 else()
-  include_directories(${CMAKE_SOURCE_DIR}/gmp/mpn/x86)
+  include_directories(${PROJECT_SOURCE_DIR}/mpn/x86)
   #include_directories(${CMAKE_SOURCE_DIR}/mpn/x86)
 endif()
 
