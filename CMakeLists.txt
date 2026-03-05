@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.31)
 
-set(PROJECT_NAME_STR MPFR_GMP_MPIR_test)
+set(PROJECT_NAME_STR MPFR_GMP_MPIR)
 set(CMAKE_CXX_STANDARD 11)
 
 project(${PROJECT_NAME_STR})
@@ -22,12 +22,12 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/mpir)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/mpfr)
 #add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-file(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)					
+#file(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)					
 
-add_executable(${PROJECT_NAME_STR} ${SRC_FILES})
+#add_executable(${PROJECT_NAME_STR} ${SRC_FILES})
 
-target_link_libraries(${PROJECT_NAME_STR} 
-	mpfr
-	mpir
-	gmp
-)
+# target_link_libraries(${PROJECT_NAME_STR} 
+	# mpfr
+	# mpir
+	# gmp
+# )
