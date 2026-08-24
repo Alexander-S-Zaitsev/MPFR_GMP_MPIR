@@ -427,6 +427,24 @@ set_target_properties(
   #OUTPUT_NAME libgmp$<$<CONFIG:Debug>:d>-${LIBGMP_LT_CURRENT}
   VERSION ${GMP_VERSION}
   SOVERSION ${LIBGMP_LT_CURRENT})
+  
+# ==== ФИКС ПОРЯДКА ВНУТРЕННЕЙ СБОРКИ GMP (гонки генераторов и объектных подцелей) ====
+
+# Список генераторов сгенерированных заголовков.
+set(_GMP_GEN_TARGETS
+  gen-fac-table gen-fib-table gen-mp-bases
+  gen-trialdivtab-h gen-mpn-jacobitab gen-mpn-perfsqr)
+
+# libgmp ждёт генераторы заголовков...
+add_dependencies(libgmp ${_GMP_GEN_TARGETS})
+
+# ...и все свои объектные подцели (чтобы .obj были готовы к линковке).
+foreach(_lib libmpn libmpz libmpq libmpf libprintf librandom libscanf)
+  if (TARGET ${_lib})
+    add_dependencies(libgmp ${_lib})
+    add_dependencies(${_lib} ${_GMP_GEN_TARGETS})  # подцели тоже ждут заголовки
+  endif()
+endforeach()
 
 # Install libgmp.
 install(
